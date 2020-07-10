@@ -8,6 +8,7 @@ using System.Text;
 /// 
 /// すみませんやっぱ使いますめっちゃ使います
 /// 
+/// いや、やっぱ使いませんでしたすみません
 /// </summary>
 namespace RBTree
 {

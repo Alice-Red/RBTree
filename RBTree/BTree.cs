@@ -41,8 +41,21 @@ namespace RUtil.Collections
 
         private bool isRoot { get => (Parent == null); }
 
+        /// <summary>
+        /// 指定されたキーの階層の深さを測ります。デバッグで使えるかもしれない
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public long Length(TKey key) {
-            throw new NotImplementedException();
+            if (!Search(key))
+                return 1;
+
+            if (Values.ContainsKey(key))
+                return 0;
+            else {
+                return 1 + SafeGetChildren(ChoiceChildren(key)).Length(key);
+            }
+
         }
 
         public ITree<TKey, TValue> Delete(TKey target) {
@@ -60,7 +73,7 @@ namespace RUtil.Collections
             else if (Children.Count() == 0)
                 return default;
             else
-                return SaveGetChildren(ChoiceChildren(key)).Get(key);
+                return SafeGetChildren(ChoiceChildren(key)).Get(key);
         }
 
         /// <summary>
@@ -75,7 +88,7 @@ namespace RUtil.Collections
             else if (Values.Count() < (MaxBranchCount / 2))
                 Values.Add(key, value);
             else
-                SaveGetChildren(ChoiceChildren(key)).Insert(key, value);
+                SafeGetChildren(ChoiceChildren(key)).Insert(key, value);
             return this;
         }
 
@@ -87,10 +100,10 @@ namespace RUtil.Collections
         public bool Search(TKey key) {
             if (Values.ContainsKey(key))
                 return true;
-            else if (Children.Count() == 0)
+            else if (Children.All(s => s == null))
                 return false;
             else
-                return SaveGetChildren(ChoiceChildren(key)).Search(key);
+                return SafeGetChildren(ChoiceChildren(key)).Search(key);
         }
 
         /// <summary>
@@ -110,7 +123,7 @@ namespace RUtil.Collections
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        private BTree<TKey, TValue> SaveGetChildren(int index) {
+        private BTree<TKey, TValue> SafeGetChildren(int index) {
             if (Children[index] == null)
                 Children[index] = new BTree<TKey, TValue>(this);
             return Children[index];
@@ -125,11 +138,15 @@ namespace RUtil.Collections
         //}
 
         public IEnumerator<TValue> GetEnumerator() {
-            throw new NotImplementedException();
+            foreach (var item in Values) {
+                yield return item.Value;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
-            throw new NotImplementedException();
+            foreach (var item in Values) {
+                yield return item.Value;
+            }
         }
     }
 }
