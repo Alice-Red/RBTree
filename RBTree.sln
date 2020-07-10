@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RBTree", "RBTree\RBTree.csproj", "{107903ED-036F-49FA-B832-1E3144755A77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRBT", "TestRBT\TestRBT.csproj", "{594D200B-0379-44AB-8BAC-AA6624586C68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{107903ED-036F-49FA-B832-1E3144755A77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{107903ED-036F-49FA-B832-1E3144755A77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{107903ED-036F-49FA-B832-1E3144755A77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{594D200B-0379-44AB-8BAC-AA6624586C68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{594D200B-0379-44AB-8BAC-AA6624586C68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{594D200B-0379-44AB-8BAC-AA6624586C68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{594D200B-0379-44AB-8BAC-AA6624586C68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
