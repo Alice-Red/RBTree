@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using RUtil.Collections;
 
 namespace TestRBT
 {
@@ -9,8 +10,16 @@ namespace TestRBT
         }
 
         [Test]
-        public void Test1() {
-            Assert.Pass();
+        public void TestRBT() {
+            var rbt = new BTree<string>();
+            rbt.Insert("");
+            rbt.Search("");
+
+
+            //Assert.True();
+
+
+            //Assert.Pass();
         }
     }
 }
