@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RUtil.Collections
 {
-    public class BTree<TKey, TValue> : ITree<TKey, TValue> where TKey : IComparable
+    public class BTree<TKey, TValue> : ITree<TKey, TValue>, IEnumerable<TValue> where TKey : IComparable
     {
         protected BTree<TKey, TValue> Parent { get; set; }
 
@@ -22,6 +22,10 @@ namespace RUtil.Collections
             Parent = null;
             Values = new SortedDictionary<TKey, TValue>();
             Children = new BTree<TKey, TValue>[MaxBranchCount];
+        }
+
+        private BTree(BTree<TKey, TValue> parent) : this() {
+            Parent = parent;
         }
 
         private BTree(TKey key, TValue value, BTree<TKey, TValue> parent) : this() {
@@ -45,21 +49,33 @@ namespace RUtil.Collections
             throw new NotImplementedException();
         }
 
-        public TValue Get(TKey target) {
-            throw new NotImplementedException();
+        /// <summary>
+        /// 指定されたキーの値を返します。これが本体だ
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public TValue Get(TKey key) {
+            if (Values.ContainsKey(key))
+                return Values[key];
+            else if (Children.Count() == 0)
+                return default;
+            else
+                return SaveGetChildren(ChoiceChildren(key)).Get(key);
         }
 
+        /// <summary>
+        /// キーと値のセットを登録します
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public ITree<TKey, TValue> Insert(TKey key, TValue value) {
             if (Values.ContainsKey(key))
                 Values[key] = value;
             else if (Values.Count() < (MaxBranchCount / 2))
                 Values.Add(key, value);
-            else {
-                var chl = ChoiceChildren(key);
-                if (Children[chl] == null) {
-                    Children[chl] = new BTree<TKey, TValue>(key, value, this);
-                }
-            }
+            else
+                SaveGetChildren(ChoiceChildren(key)).Insert(key, value);
             return this;
         }
 
@@ -74,9 +90,14 @@ namespace RUtil.Collections
             else if (Children.Count() == 0)
                 return false;
             else
-                return Children[ChoiceChildren(key)].Search(key);
+                return SaveGetChildren(ChoiceChildren(key)).Search(key);
         }
 
+        /// <summary>
+        /// キーに対し適切な子ノードの番号を返します
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         private int ChoiceChildren(TKey key) {
             for (int i = 0; i < Values.Count(); i++)
                 if (Values.ElementAt(i).Key.CompareTo(key) > 0)
@@ -84,13 +105,31 @@ namespace RUtil.Collections
             return Values.Count();
         }
 
-        private BTree<TKey,TValue> TurnLeft() {
-
+        /// <summary>
+        /// 子ノードがnullのまま参照されるのを防ぎます
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        private BTree<TKey, TValue> SaveGetChildren(int index) {
+            if (Children[index] == null)
+                Children[index] = new BTree<TKey, TValue>(this);
+            return Children[index];
         }
 
-        private BTree<TKey, TValue> TurnRight() {
+        //private BTree<TKey, TValue> TurnLeft() {
 
+        //}
+
+        //private BTree<TKey, TValue> TurnRight() {
+
+        //}
+
+        public IEnumerator<TValue> GetEnumerator() {
+            throw new NotImplementedException();
         }
 
+        IEnumerator IEnumerable.GetEnumerator() {
+            throw new NotImplementedException();
+        }
     }
 }
