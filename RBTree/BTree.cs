@@ -33,7 +33,7 @@ namespace RUtil.Collections
         }
 
         public ITree<TKey, TValue> Insert(TKey key, TValue value) {
-
+            throw new NotImplementedException();
         }
 
         public bool Search(TKey target) {
