@@ -6,9 +6,6 @@ namespace RBTree
 {
     public interface ITree<TKey, TValue>
     {
-        TKey Key { get; set; }
-
-        TValue Value { get; set; }
 
         public bool Search(TKey target);
 
