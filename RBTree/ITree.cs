@@ -4,13 +4,18 @@ using System.Text;
 
 namespace RBTree
 {
-    public interface ITree<T>
+    public interface ITree<TKey, TValue>
     {
-        public bool Search(T target);
+        TKey Key { get; set; }
+        TValue Value { get; set; }
 
-        public ITree<T> Insert(T target);
+        public bool Search(TKey target);
 
-        public ITree<T> Delete(T target);
+        public TValue Get(TKey target);
+
+        public ITree<TKey, TValue> Insert(TKey key, TValue value);
+
+        public ITree<TKey, TValue> Delete(TKey target);
 
     }
 }

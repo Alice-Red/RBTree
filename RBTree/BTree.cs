@@ -9,62 +9,50 @@ using System.ComponentModel.Design.Serialization;
 
 namespace RUtil.Collections
 {
-    public class BTree<T> : ITreeNode<BTree<T>>, ITree<BTree<T>>, IEnumerable<T> where T : IComparable
+    public class BTree<TKey, TValue> : ITreeNode<BTree<TKey, TValue>>, ITree<TKey, TValue>, IEnumerable<TValue> where TKey : IComparable
     {
+        public TKey Key { get; set; }
+        public TValue Value { get; set; }
+        BTree<TKey, TValue> ITreeNode<BTree<TKey, TValue>>.Parent { get; set; }
+        IList<BTree<TKey, TValue>> ITreeNode<BTree<TKey, TValue>>.Children { get; set; }
 
-        public BTree<T> Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IList<BTree<T>> Children { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        BTree<T> ITreeNode<BTree<T>>.Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        IList<BTree<T>> ITreeNode<BTree<T>>.Children { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int MaxBranchCount { get; set; } = 2;
 
-        public bool Search(BTree<T> target) {
-            throw new NotImplementedException();
-        }
-        public ITree<BTree<T>> Insert(BTree<T> target) {
-            throw new NotImplementedException();
-        }
+        public bool IsRoot { get; }
 
-        public ITree<BTree<T>> Delete(BTree<T> target) {
+        public ITree<TKey, TValue> Delete(TKey target) {
             throw new NotImplementedException();
         }
 
-
-
-
-
-
-        BTree<T> ITreeNode<BTree<T>>.AddChild(BTree<T> child) {
+        public TValue Get(TKey target) {
             throw new NotImplementedException();
         }
 
-        BTree<T> ITreeNode<BTree<T>>.RemoveChild(BTree<T> child) {
+        public IEnumerator<TValue> GetEnumerator() {
             throw new NotImplementedException();
         }
 
-        bool ITreeNode<BTree<T>>.TryRemoveChild(BTree<T> child) {
+        public ITree<TKey, TValue> Insert(TKey key, TValue value) {
+
+        }
+
+        public bool Search(TKey target) {
             throw new NotImplementedException();
         }
 
-        BTree<T> ITreeNode<BTree<T>>.ClearChildren() {
+        BTree<TKey, TValue> ITreeNode<BTree<TKey, TValue>>.AddChild(BTree<TKey, TValue> child) {
             throw new NotImplementedException();
         }
-
-        bool ITreeNode<BTree<T>>.TryRemoveOwn() {
-            throw new NotImplementedException();
-        }
-
-        BTree<T> ITreeNode<BTree<T>>.RemoveOwn() {
-            throw new NotImplementedException();
-        }
-
-
-
-        public IEnumerator<T> GetEnumerator() {
-            throw new NotImplementedException();
-        }
-
 
         IEnumerator IEnumerable.GetEnumerator() {
+            throw new NotImplementedException();
+        }
+
+        BTree<TKey, TValue> ITreeNode<BTree<TKey, TValue>>.RemoveOwn() {
+            throw new NotImplementedException();
+        }
+
+        bool ITreeNode<BTree<TKey, TValue>>.TryRemoveChild(BTree<TKey, TValue> child) {
             throw new NotImplementedException();
         }
 
