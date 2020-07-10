@@ -2,7 +2,7 @@
 
 namespace RBTree
 {
-    public class Class1
+    public class RBTree
     {
     }
 }
