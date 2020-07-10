@@ -6,19 +6,40 @@ using System.IO;
 using System.Collections;
 using RBTree;
 using System.ComponentModel.Design.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace RUtil.Collections
 {
-    public class BTree<TKey, TValue> : ITreeNode<BTree<TKey, TValue>>, ITree<TKey, TValue>, IEnumerable<TValue> where TKey : IComparable
+    public class BTree<TKey, TValue> : ITree<TKey, TValue> where TKey : IComparable
     {
-        public TKey Key { get; set; }
-        public TValue Value { get; set; }
-        BTree<TKey, TValue> ITreeNode<BTree<TKey, TValue>>.Parent { get; set; }
-        IList<BTree<TKey, TValue>> ITreeNode<BTree<TKey, TValue>>.Children { get; set; }
+        protected BTree<TKey, TValue> Parent { get; set; }
+
+        protected BTree<TKey, TValue>[] Children { get; set; }
+
+        public SortedDictionary<TKey, TValue> Values { get; private set; }
+
+        public BTree() {
+            Parent = null;
+            Values = new SortedDictionary<TKey, TValue>();
+            Children = new BTree<TKey, TValue>[MaxBranchCount];
+        }
+
+        private BTree(TKey key, TValue value, BTree<TKey, TValue> parent) : this() {
+            Parent = parent;
+            Insert(key, value);
+        }
+
+        public void Add(TKey key, TValue value) {
+            Insert(key, value);
+        }
 
         public int MaxBranchCount { get; set; } = 2;
 
-        public bool IsRoot { get; }
+        private bool isRoot { get => (Parent == null); }
+
+        public long Length(TKey key) {
+            throw new NotImplementedException();
+        }
 
         public ITree<TKey, TValue> Delete(TKey target) {
             throw new NotImplementedException();
@@ -28,32 +49,47 @@ namespace RUtil.Collections
             throw new NotImplementedException();
         }
 
-        public IEnumerator<TValue> GetEnumerator() {
-            throw new NotImplementedException();
-        }
-
         public ITree<TKey, TValue> Insert(TKey key, TValue value) {
-            throw new NotImplementedException();
+            if (Values.ContainsKey(key))
+                Values[key] = value;
+            else if (Values.Count() < (MaxBranchCount / 2))
+                Values.Add(key, value);
+            else {
+                var chl = ChoiceChildren(key);
+                if (Children[chl] == null) {
+                    Children[chl] = new BTree<TKey, TValue>(key, value, this);
+                }
+            }
+            return this;
         }
 
-        public bool Search(TKey target) {
-            throw new NotImplementedException();
+        /// <summary>
+        /// 指定されたキーが存在するか調べます
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool Search(TKey key) {
+            if (Values.ContainsKey(key))
+                return true;
+            else if (Children.Count() == 0)
+                return false;
+            else
+                return Children[ChoiceChildren(key)].Search(key);
         }
 
-        BTree<TKey, TValue> ITreeNode<BTree<TKey, TValue>>.AddChild(BTree<TKey, TValue> child) {
-            throw new NotImplementedException();
+        private int ChoiceChildren(TKey key) {
+            for (int i = 0; i < Values.Count(); i++)
+                if (Values.ElementAt(i).Key.CompareTo(key) > 0)
+                    return i;
+            return Values.Count();
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
-            throw new NotImplementedException();
+        private BTree<TKey,TValue> TurnLeft() {
+
         }
 
-        BTree<TKey, TValue> ITreeNode<BTree<TKey, TValue>>.RemoveOwn() {
-            throw new NotImplementedException();
-        }
+        private BTree<TKey, TValue> TurnRight() {
 
-        bool ITreeNode<BTree<TKey, TValue>>.TryRemoveChild(BTree<TKey, TValue> child) {
-            throw new NotImplementedException();
         }
 
     }
