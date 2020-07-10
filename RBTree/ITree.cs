@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RBTree
 {
-    public interface ITree<T> where T : IComparable
+    public interface ITree<T>
     {
         public bool Search(T target);
 
