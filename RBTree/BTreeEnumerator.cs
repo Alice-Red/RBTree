@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
+/// <summary>
+/// 使わないかも
+/// 
+/// すみませんやっぱ使いますめっちゃ使います
+/// 
+/// </summary>
 namespace RBTree
 {
     class BTreeEnumerator<T> : IEnumerator<T>
